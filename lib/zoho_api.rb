@@ -25,9 +25,9 @@ module ZohoApi
 
     attr_reader :auth_token, :module_fields
 
-    def initialize(auth_token, modules, ignore_fields, fields = nil)
+    def initialize(auth_token, base_modules, modules, ignore_fields, fields = nil)
       @auth_token = auth_token
-      @modules = %w(Accounts Contacts Events Leads Potentials Tasks Users).concat(modules).uniq
+      @modules = base_modules.concat(modules).uniq
       @module_fields = fields.nil? ? reflect_module_fields : fields
       @ignore_fields = ignore_fields
     end
