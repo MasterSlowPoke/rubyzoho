@@ -52,7 +52,10 @@ module ZohoCrmUtils
     names.each do |name|
       n = name.class == Symbol ? name.to_s : name
       n.gsub!(/[()]*/, '')
-      raise(RuntimeError, "Bad field name: #{name}") unless self.class.method_name?(n)
+      unless self.class.method_name?(n)
+        next if RubyZoho.configuration.ignore_fields_with_bad_names
+        raise(RuntimeError, "Bad field name: #{name}")
+      end
       self.class.create_getter(klass, n)
       self.class.create_setter(klass, n)
     end
